@@ -1,8 +1,10 @@
 <ion-header>
   <ion-navbar>
+    <!--
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
+    -->
     <ion-title>Home</ion-title>
     <ion-buttons end>
       <button ion-button (click)="toggleReorder()" *ngIf="!reorderIsEnabled" >
@@ -22,13 +24,13 @@
 <ion-content padding>
   <ion-list [reorder]="reorderIsEnabled" (ionItemReorder)="itemReordered($event)">
 
-    <ion-item-sliding *ngFor="let todo of todos">
+    <ion-item-sliding *ngFor="let todo of todos; let todoIndex = index">
       <ion-item>
         {{todo}}
       </ion-item>
 
       <ion-item-options side="right">
-        <button ion-button color="danger">
+        <button color="danger" ion-button (click)="archiveTodo(todoIndex)">
           <ion-icon name="trash"></ion-icon>
         </button>
       </ion-item-options>
@@ -37,7 +39,7 @@
   </ion-list>
 
   <ion-fab right bottom>
-    <button ion-fab [navPush]="archivedTodosPage">
+    <button ion-fab (click)="goToArchivePage()">
       <ion-icon name="archive"></ion-icon>
     </button>
   </ion-fab>

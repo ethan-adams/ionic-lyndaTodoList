@@ -28,6 +28,10 @@ export class HomePage {
     this.navCtrl.push(ArchivedTodosPage);
   }
 
+  archiveTodo(todoIndex) {
+    this.todoProvider.archiveTodo(todoIndex);
+  }
+
   openTodoAlert() {
     let addTodoAlert = this.alertController.create({
       title: "Add a task",
