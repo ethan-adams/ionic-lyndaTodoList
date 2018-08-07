@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, AlertController, reorderArray } from 'ionic-angular';
 import { TodoProvider } from "../../providers/todo/todo";
+import { ArchivedTodosPage } from "../archived-todos/archived-todos"
 
 @Component({
   selector: 'page-home',
@@ -9,6 +10,7 @@ import { TodoProvider } from "../../providers/todo/todo";
 export class HomePage {
   public todos = [];
   public reorderIsEnabled = false;
+  public archivedTodosPage = ArchivedTodosPage
 
   constructor(private todoProvider: TodoProvider, public navCtrl: NavController, private alertController: AlertController) {
     this.todos = this.todoProvider.getTodos();
@@ -20,6 +22,10 @@ export class HomePage {
 
   itemReordered($event) {
     reorderArray(this.todos, $event);
+  }
+
+  goToArchivePage() {
+    this.navCtrl.push(ArchivedTodosPage);
   }
 
   openTodoAlert() {
