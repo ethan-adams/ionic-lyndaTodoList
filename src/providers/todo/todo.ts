@@ -26,6 +26,10 @@ export class TodoProvider {
 
   public addTodo(todo){
     this.todos.push(todo);
+  }  
+  public editTodo(todo, todoIndex){
+    this.todos.splice(todoIndex, 1);
+    this.todos.push(todo);
   }
 
   archiveTodo(todoIndex) {

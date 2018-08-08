@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, AlertController, reorderArray } from 'ionic-angular';
+import { NavController, AlertController, reorderArray, ToastController } from 'ionic-angular';
 import { TodoProvider } from "../../providers/todo/todo";
 import { ArchivedTodosPage } from "../archived-todos/archived-todos"
 
@@ -12,7 +12,7 @@ export class HomePage {
   public reorderIsEnabled = false;
   public archivedTodosPage = ArchivedTodosPage
 
-  constructor(private todoProvider: TodoProvider, public navCtrl: NavController, private alertController: AlertController) {
+  constructor(private toastController: ToastController, private todoProvider: TodoProvider, public navCtrl: NavController, private alertController: AlertController) {
     this.todos = this.todoProvider.getTodos();
   }
 
@@ -30,6 +30,42 @@ export class HomePage {
 
   archiveTodo(todoIndex) {
     this.todoProvider.archiveTodo(todoIndex);
+  }
+
+  editTodo(todoIndex) {
+    let editTodoAlert = this.alertController.create({
+      title: "Edit a task",
+      message: "Edit your task",
+      inputs: [
+        {
+          type: "text",
+          value: this.todos[todoIndex],
+          name: "editTodoInput"
+        }
+      ],
+      buttons: [
+        {
+          text: "Cancel"
+        },
+        {
+          text: "Edit task",
+          handler: (inputData)=> {
+            let editText;
+            editText = inputData.editTodoInput;
+            this.todoProvider.editTodo(editText, todoIndex);
+
+            editTodoAlert.onDidDismiss(()=> {
+              let addTodoToast = this.toastController.create({
+                message: "Task edited",
+                duration: 2000
+            });
+            addTodoToast.present();
+          });
+          }
+        }
+      ]
+    });
+    editTodoAlert.present();
   }
 
   openTodoAlert() {
@@ -52,6 +88,14 @@ export class HomePage {
             let todoText;
             todoText = inputData.addTodoInput;
             this.todoProvider.addTodo(todoText);
+
+            addTodoAlert.onDidDismiss(()=> {
+                let addTodoToast = this.toastController.create({
+                  message: "Task added",
+                  duration: 2000
+              });
+              addTodoToast.present();
+            });
           }
         }
       ]
